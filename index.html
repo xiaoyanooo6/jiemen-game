@@ -13,7 +13,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="description" content="《借门》第一章与第二章：中式民俗恐怖互动解谜，调查七号屋、追踪门后湿痕、还原借门记录。" />
-  <title>借门｜第一章：桂槐巷 · 第二章：门后（V4.6.1）</title>
+  <title>借门｜第一章：桂槐巷 · 第二章：门后（V4.6.2）</title>
   
   <style>:root{--ivory:#e9e0cd;--warm:#c8bba0;--muted:#afa48d;--rust:#a77856;--ink:#11110e;--line:#766d5c66;--paper:#d3bf97}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;background:#060706;color:var(--ivory);font-family:"Songti SC","Noto Serif CJK SC","SimSun",Georgia,serif;-webkit-tap-highlight-color:transparent}body{overflow:hidden;user-select:none}button,input{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible{outline:2px solid #e4ba7f;outline-offset:3px}button[disabled]{cursor:default;opacity:.4}button[hidden],[hidden]{display:none!important}#app{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#191b16,#050605 74%)}
@@ -569,7 +569,7 @@ input,textarea,select{font-size:16px;}
     <div class="top-hud" id="topHud">
       <div class="brand-block">
         <span class="brand-small">借 门</span>
-        <span id="locationLine">桂槐巷 · 雨夜</span><span id="releaseBadge" style="font:10px/1.2 system-ui,sans-serif;letter-spacing:.04em;color:#c4a980;opacity:.8;white-space:nowrap">v4.6.0</span>
+        <span id="locationLine">桂槐巷 · 雨夜</span><span id="releaseBadge" style="font:10px/1.2 system-ui,sans-serif;letter-spacing:.04em;color:#c4a980;opacity:.8;white-space:nowrap">v4.6.2</span>
       </div>
       <div class="hud-actions">
         <button id="bagBtn" class="hud-btn" aria-label="随身物件" title="随身物件 (I)"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="13" rx="2"/><path d="M8 8V6a4 4 0 018 0v2"/></svg><span class="hud-text">物件</span><i id="bagDot" class="hud-dot" hidden></i></button>
@@ -620,6 +620,12 @@ input,textarea,select{font-size:16px;}
         <div class="setting-row"><label for="scareToggle">惊吓增强模式</label><input id="scareToggle" type="checkbox" /></div>
         <div class="setting-row"><label for="musicToggle">心理恐怖配乐</label><input id="musicToggle" type="checkbox" checked /></div>
         <button id="resumeBtn" class="primary-btn narrow">继续探索</button>
+        <div class="chapter-test-tools" style="margin-top:14px;padding:12px;border:1px solid rgba(196,169,128,.28);border-radius:10px;background:rgba(12,15,17,.42)">
+          <p style="margin:0 0 8px;font-size:12px;letter-spacing:.08em;color:#c4a980">测试辅助 · 不计入正常通关</p>
+          <button id="chapterJumpBtn" class="secondary-btn" type="button">跳转到第二章 · 门后</button>
+          <button id="restoreChapterSaveBtn" class="text-btn" type="button" hidden>恢复跳关前的存档</button>
+          <small style="display:block;margin-top:7px;opacity:.72;line-height:1.55">跳转前会备份当前进度；进入第二章后可通过“恢复跳关前的存档”回到原进度。正式玩家建议从第一章自然通关。</small>
+        </div>
         <button id="resetBtn" class="text-btn danger">清除进度并重新开始</button>
         <p class="settings-help">iPhone：左右轻滑观察、点按光圈探索，推荐横屏。首次点“走进桂槐巷”后才会开启音效；静音模式或系统音量过低时请检查手机设置。建议戴耳机；强惊吓可在设置里关闭，音量可调，音乐和强惊吓可分别关闭。</p>
       </div>
@@ -628,7 +634,7 @@ input,textarea,select{font-size:16px;}
     <section id="prologue" class="prologue overlay">
       <div class="intro-wall" aria-hidden="true"></div>
       <div class="intro-content">
-        <p class="intro-label">原创中式民俗 · 心理恐怖 · 第一章与第二章 · V4.6.1</p>
+        <p class="intro-label">原创中式民俗 · 心理恐怖 · 第一章与第二章 · V4.6.2</p>
         <h1>借<span>门</span></h1>
         <div class="intro-rule"></div>
         <p class="intro-verse">门可以借，名字不能还。</p>
@@ -650,7 +656,7 @@ input,textarea,select{font-size:16px;}
         <p>那道门在身后关上。<br/>你听见屋里，有人轻轻叫了一声从未对别人说过的名字。</p>
         <p class="ending-note">雨声已经听不见了。你忽然发现，自己的鞋底正在往外渗水。</p>
         <p id="storyEndingTruth" class="ending-note"></p><div class="end-actions"><button id="endContinue" class="primary-btn">回到走廊继续调查</button><button id="endRestart" class="secondary-btn">从巷口重新开始</button></div>
-        <small>这是一章完整交互原型。后续房间与结局将接入同一套系统。</small>
+        <small>第一章与第二章均已开放。章节跳转仅用于测试，不计入正常通关记录。</small>
       </div>
     </section>
 
@@ -1153,6 +1159,7 @@ if(old!==scene){AUDIO.sfx('step',-.25);setTimeout(()=>AUDIO.sfx('step',.15),390)
  let text=sceneInfo[scene].intro;
  if(scene==='lock'&&!has('key')){text='锁孔里露出一道铜光，像是正在等一把旧钥匙。你想起六号屋的木柜。';}
  else if(scene==='wall'&&state.doorAppeared&&!isFlag('doorNoticed')){flag('doorNoticed');text='你停下来，重新看了看六号与八号之间。那里什么时候有门了？';}
+ else if(scene==='wall'&&!state.doorAppeared){text='这里是六号与八号之间。先分别进入两户调查；墙面中央的回音，等你回来时也许会变得不同。';}
  else if(scene==='six'&&!has('key')&&visited('lock')){text='你在七号门前摸过空空的口袋。木柜下方的抽屉似乎没有完全关严。';}
  else if(scene==='six'&&state.puzzlePhoneDone&&old!=='six'){text='六号屋的听筒已经放好，可电话线却在桌边轻轻抽动。第三杯茶的水印，不知何时出现在桌上。';setTimeout(()=>{if(state.scene==='six'&&inGame)AUDIO.sfx('phone',-.8)},700);}
  else if(scene==='six'&&state.puzzleBowlsDone){text='六号屋仍只有两杯茶，但桌上露出第三道浅浅的圆形水印。';}
@@ -1301,24 +1308,52 @@ function showBowlPuzzle(){
  });
 }
 function showPhonePuzzle(){
- objectView('phone_hd','旧拨号电话','听筒里没有拨号音。拨号盘底下有旧宅的三枚门牌压痕。\n六号与八号之间，本该经过哪里？',{
- eyebrow:'六号屋 · 逐个点按号码',custom:host=>{
-   const root=document.createElement('div');root.className='object-puzzle rotary-puzzle';
-   root.innerHTML='<div class="phone-display" aria-live="polite">— — —</div><div class="phone-keypad"></div><div class="puzzle-guide">直接点击下方数字键，依次输入三位号码；输错可以退格或清空。电话目前没有拨号音。</div><p class="puzzle-status" aria-live="polite"></p>';
-   host.appendChild(root);const pad=root.querySelector('.phone-keypad'),read=root.querySelector('.phone-display'),status=root.querySelector('.puzzle-status');
-   const render=()=>{read.textContent=[...state.phoneDigits,...Array(3-state.phoneDigits.length).fill('—')].join('　');};
-   for(let n=1;n<=10;n++){const digit=n%10;const b=document.createElement('button');b.type='button';b.className='phone-digit';b.textContent=String(digit);b.onclick=()=>{
-     if(state.puzzlePhoneDone)return;if(state.phoneDigits.length===3)state.phoneDigits=[];
-     state.phoneDigits.push(digit);AUDIO.sfx('phone',(digit-5)/8);if(state.phoneDigits.length===2&&!state.puzzlePhoneDone){setTimeout(()=>AUDIO.sfx('phone',-.9),290);status.textContent='你听见另一部电话在屋外轻轻响了一声。';}render();save();
-     if(state.phoneDigits.length===3){if(state.phoneDigits.join('')==='678'&&state.routeReconstructed){
-       state.puzzlePhoneDone=true;addNote('phoneResult');status.textContent='听筒里有个女人在水声中说：“孩子从八号走了……不要让他们把七号擦掉。”';AUDIO.playClip('distant_chuckle',.18,.8,.76);AUDIO.sfx('low');shakeStage(240);save();
-      }else{status.textContent=state.phoneDigits.join('')==='678'?'另一头有人数着门牌，却在中间停住。你还没有找到孩子究竟从哪一扇门出去。':'三次拨号后，线路被切断。听筒里传来三声轻轻的敲击。';AUDIO.sfx('knock');setTimeout(()=>{if(!state.puzzlePhoneDone){state.phoneDigits=[];render()}},850);}}
-   };pad.appendChild(b)}
-   const clear=document.createElement('button');clear.type='button';clear.className='phone-digit phone-clear';clear.textContent='清空';clear.onclick=()=>{state.phoneDigits=[];status.textContent='你重新放下听筒，准备再拨。';render();save()};pad.appendChild(clear);
-   const del=document.createElement('button');del.type='button';del.className='phone-digit phone-clear';del.textContent='退格';del.onclick=()=>{state.phoneDigits.pop();status.textContent='你把刚才的一位号码退了回去。';render();save()};pad.appendChild(del);
-   if(state.puzzlePhoneDone){state.phoneDigits=[6,7,8];status.textContent='线路已经接通，听筒里有人在低声念着消失的住户。'}render();
+ const routeReady=!!state.routeReconstructed;
+ objectView('phone_hd','旧拨号电话',
+  routeReady
+   ?'听筒里没有拨号音。你已经从儿童画中还原出六号、七号、八号的先后路线。拨号盘下方的三枚门牌压痕，与这条路线一一对应。'
+   :'听筒里没有拨号音。拨号盘底下有三枚门牌压痕，但它们不是独立密码。先去七号屋旧卧室，把灯下纸条、三副碗筷和孩子画中的脚印拼成一条路线，再回来拨号。',
+  {
+   eyebrow:'六号屋 · 逐个点按号码',
+   custom:host=>{
+    const root=document.createElement('div');root.className='object-puzzle rotary-puzzle';
+    root.innerHTML='<div class="phone-display" aria-live="polite">— — —</div><div class="phone-keypad"></div><div class="puzzle-guide"></div><p class="puzzle-status" aria-live="polite"></p>';
+    host.appendChild(root);
+    const pad=root.querySelector('.phone-keypad'),read=root.querySelector('.phone-display'),guide=root.querySelector('.puzzle-guide'),status=root.querySelector('.puzzle-status');
+    guide.textContent=routeReady
+      ?'路线已经复原：六号屋 → 七号屋 → 八号屋。按这个顺序输入三位门牌号。'
+      :'先不要盲目拨号。手记会记录这条路线；完成“六号屋 → 七号屋 → 八号屋”的路线复原后，拨号键才会启用。';
+    const render=()=>{read.textContent=[...state.phoneDigits,...Array(3-state.phoneDigits.length).fill('—')].join('　');};
+    for(let n=1;n<=10;n++){
+     const digit=n%10,b=document.createElement('button');b.type='button';b.className='phone-digit';b.textContent=String(digit);b.disabled=!routeReady||state.puzzlePhoneDone;
+     b.onclick=()=>{
+      if(!routeReady||state.puzzlePhoneDone)return;
+      if(state.phoneDigits.length===3)state.phoneDigits=[];
+      state.phoneDigits.push(digit);AUDIO.sfx('phone',(digit-5)/8);
+      if(state.phoneDigits.length===2&&!state.puzzlePhoneDone){setTimeout(()=>AUDIO.sfx('phone',-.9),290);status.textContent='你听见另一部电话在屋外轻轻响了一声。';}
+      render();save();
+      if(state.phoneDigits.length===3){
+       if(state.phoneDigits.join('')==='678'){
+        state.puzzlePhoneDone=true;addNote('phoneResult');
+        status.textContent='线路接通。听筒里有个女人在水声中说：“孩子从八号走了……不要让他们把七号擦掉。”';
+        AUDIO.playClip('distant_chuckle',.18,.8,.76);AUDIO.sfx('low');shakeStage(240);save();
+       }else{
+        status.textContent='三次拨号后，线路被切断。你想起路线顺序：六号、七号、八号。';
+        AUDIO.sfx('knock');setTimeout(()=>{if(!state.puzzlePhoneDone){state.phoneDigits=[];render()}},850);
+       }
+      }
+     };
+     pad.appendChild(b);
+    }
+    const clear=document.createElement('button');clear.type='button';clear.className='phone-digit phone-clear';clear.textContent='清空';clear.disabled=!routeReady||state.puzzlePhoneDone;
+    clear.onclick=()=>{state.phoneDigits=[];status.textContent='你重新放下听筒，准备再拨。';render();save()};pad.appendChild(clear);
+    const del=document.createElement('button');del.type='button';del.className='phone-digit phone-clear';del.textContent='退格';del.disabled=!routeReady||state.puzzlePhoneDone;
+    del.onclick=()=>{state.phoneDigits.pop();status.textContent='你把刚才的一位号码退了回去。';render();save()};pad.appendChild(del);
+    if(!routeReady)status.textContent='待完成：七号屋旧卧室 → 孩子画 → 六 / 七 / 八路线复原。';
+    if(state.puzzlePhoneDone){state.phoneDigits=[6,7,8];status.textContent='线路已经接通，听筒里有人在低声念着消失的住户。';render()}
+   }
   }
- });
+ );
 }
 function showMirrorPuzzle(){
  objectView('mirror_fog_hd','雾里的另一条走廊','擦掉水汽后，这面镜子可能会映出你身后根本没有的空间。',{
@@ -1453,20 +1488,23 @@ function showMemoryTimeline(host){
 // V4.4：手记中三段记忆与门上的三道凹槽共享同一份状态。辅助线索只由玩家主动展开。
 const MEMORY_GROUPS=[
  {id:'paper',name:'被抹掉的是谁',subtitle:'纸上的空白并不是空白',place:'八号屋的柜底 · 七号屋的相册',
-  steps:[['puzzleRubbing','擦去登记表上的旧墨','八号屋 · 柜底'],['photoBackSeen','检查相片背面','七号屋 · 客厅'],['paperReconstructed','让两张纸的压痕对齐','八号屋 · 柜底']],
-  hints:['那张照片里，有一处不应该变空。','回到八号屋柜底，看看登记表；再去七号屋客厅翻看相片背面。','先擦开登记表，再调到异常电台、重新查看合影直至人物变化；把照片翻到背面，回八号屋将两层压痕叠合。']},
+  steps:[['puzzleRubbing','擦去登记表上的旧墨','八号屋 · 柜底'],['radioTuned','调到异常频率 94.7','七号屋 · 客厅收音机'],['photoChanged','重新查看合影，确认男孩消失','七号屋 · 客厅相册'],['photoBackSeen','检查相片背面','七号屋 · 客厅'],['paperReconstructed','让两张纸的压痕对齐','八号屋 · 柜底']],
+  hints:['那张照片里，有一处不应该变空。','先在七号屋客厅找到收音机，再重新查看合影；相片背面和八号屋登记表可能属于同一页记录。','把收音机调到刻度被反复摸亮的94.7附近，再重新查看合影直到男孩消失；翻到相片背面，回八号屋擦开登记表并将两层压痕叠合。']},
  {id:'route',name:'孩子从哪扇门离开',subtitle:'借出的路通向了别人家',place:'六号屋 · 八号屋 · 七号卧室',
   steps:[['puzzleLetterDone','读出灯下纸条','六号屋 · 拿钥匙的抽屉'],['puzzleBowlsDone','把三副碗筷放回原位','八号屋 · 餐桌'],['puzzleDrawingDone','循着画中脚印','七号屋 · 卧室'],['routeReconstructed','拼合三道门的路线','七号屋 · 卧室'],['puzzlePhoneDone','接通当年的见证电话','六号屋 · 电话']],
-  hints:['那个孩子并不是从七号的正门走出来的。','六号屋的纸条、八号屋的碗、七号卧室的画，记录了同一条路线。','先还原纸条、碗和脚印；在儿童画里按六→七→八放好三道门，之后回六号屋拨打三位门牌号码。']},
+  hints:['那个孩子并不是从七号的正门走出来的。','六号屋的纸条、八号屋的碗、七号卧室的画，记录了同一条路线。','先还原纸条、碗和卧室五枚脚印；在儿童画里按六→七→八放好三道门，之后回六号屋拨打678。']},
  {id:'flood',name:'门里停住的时刻',subtitle:'雨水里混着一段没有结束的声音',place:'七号屋客厅 · 洗漱间',
-  steps:[['radioRecorded','录下异常频道的声音','七号屋 · 客厅收音机'],['puzzleMirrorDone','擦开镜面的水汽','七号屋 · 洗漱间'],['clockSeen','确认旧钟停止的时刻','七号屋 · 客厅旧钟'],['floodReconstructed','复原录音中的声音顺序','七号屋 · 客厅收音机']],
-  hints:['是屋里的水先响，还是屋外的雨先响？','客厅的收音机、旧钟和洗漱间的镜子留下了同一刻的痕迹。','调频到94.7并长按录音；擦开镜面水汽、检查客厅挂钟，返回电台把瓷杯、水声、呼吸按先后排列。']}
+  steps:[['radioTuned','找到异常频率 94.7','七号屋 · 客厅收音机'],['radioRecorded','按住录音键录下声音','七号屋 · 客厅收音机'],['puzzleMirrorDone','擦开镜面的水汽','七号屋 · 洗漱间'],['clockSeen','确认旧钟停止的时刻','七号屋 · 客厅旧钟'],['floodReconstructed','复原录音中的声音顺序','七号屋 · 客厅收音机']],
+  hints:['是屋里的水先响，还是屋外的雨先响？','客厅的收音机、旧钟和洗漱间的镜子留下了同一刻的痕迹。','调到94.7并长按录音；擦开镜面水汽、检查停在23:47的客厅挂钟，返回电台把瓷杯、水声、呼吸按先后排列。']}
 ];
 function memoryGroupState(group){
  const done=group.id==='paper'?!!state.paperReconstructed:group.id==='route'?!!(state.routeReconstructed&&state.puzzlePhoneDone):!!state.floodReconstructed;
  const stepDone=(id)=>id==='clockSeen'?state.notes.includes('clock'):!!state[id];
- const found=group.steps.some(([id])=>stepDone(id));
- return {done,found,status:done?'已还原':found?'已找到 · 待还原':'尚未找到',stepDone};
+ const completedCount=group.steps.filter(([id])=>stepDone(id)).length;
+ const total=group.steps.length;
+ const found=completedCount>0;
+ const status=done?'已还原':`已完成 ${completedCount}/${total} 项 · 待还原`;
+ return {done,found,status,completedCount,total,stepDone};
 }
 function memorySummary(){return MEMORY_GROUPS.map(g=>({id:g.id,name:g.name,...memoryGroupState(g)}));}
 function firstUnfinishedMemory(){return MEMORY_GROUPS.find(g=>!memoryGroupState(g).done)||null;}
@@ -1484,7 +1522,7 @@ function memoryHintButton(group,container,levelOnly=false){
 function renderMemoryJournal(content){
  const h=document.createElement('section');h.className='memory-journal';
  const completed=memorySummary().filter(x=>x.done).length;
- h.innerHTML=`<div class="memory-journal-head"><small>那一年 · 没能带回来的东西</small><h3>三段未归还的记忆</h3><p>已还原 ${completed} / 3 段记忆。去过一间屋子，不等于理解它留下的事。</p></div>`;
+ const discovered=memorySummary().filter(x=>x.found).length;h.innerHTML=`<div class="memory-journal-head"><small>那一年 · 没能带回来的东西</small><h3>三段未归还的记忆</h3><p>已还原 ${completed}/3 段 · 已开始调查 ${discovered}/3 段。房间探索、线索发现与记忆还原分别记录。</p></div>`;
  const scene=sceneInfo[state.scene];
  if(visited('lock')&&!has('key')){const reminder=document.createElement('p');reminder.className='memory-room-note';reminder.textContent='你试过七号门锁：锁孔需要钥匙。六号屋木柜的抽屉还值得查。';h.appendChild(reminder)}
  if(scene){const seen=state.exploredHotspots[state.scene]||{};
@@ -1581,7 +1619,7 @@ function photoInspect(){
 }
 function radioInspect(){
  const after=state.radioTuned;
- objectView('radio_hd','旧收音机',after?'收音机仍在发出微弱电流声。刚才那一段声音像是来自很远的地方。':'老式旋钮有明显的手汗印。电源没有接通，可当你摸向调频钮，扬声器里响起一阵细沙般的杂音。',{
+ objectView('radio_hd','旧收音机',after?'收音机仍在发出微弱电流声。刚才那一段声音像是来自很远的地方。':'老式旋钮有明显的手汗印。刻度玻璃在94.7附近留着一小段被反复擦亮的痕迹。电源没有接通，可当你摸向调频钮，扬声器里响起一阵细沙般的杂音。',{
   eyebrow:'七号屋 · 茶几上的收音机',hidePutDown:false,
   custom:host=>{
    const wrap=document.createElement('div');wrap.className='radio-tuner';wrap.innerHTML='<div class="radio-readout"><span>FM</span><strong id="frequencyRead">93.1</strong><span>MHz</span></div><input id="frequencySlider" type="range" min="87.0" max="108.0" step="0.1" aria-label="调节收音机频率"/><div class="radio-fine"><button type="button" data-step="-1">-1.0</button><button type="button" data-step="-0.1">-0.1</button><button type="button" data-step="0.1">+0.1</button><button type="button" data-step="1">+1.0</button></div><div class="radio-tips">收音机就在茶几上。拖动刻度或用下方 ±0.1 逐格微调，留意杂音变化。</div><div class="radio-ghostline" id="radioGhostLine">……沙……沙……</div><button type="button" id="recordRadio" class="record-radio" disabled>按住录下这段声音</button><div class="record-progress"><div id="recordFill"></div></div>';
@@ -1604,7 +1642,7 @@ function radioInspect(){
    slider.addEventListener('input',()=>setFreq(+slider.value));
    wrap.querySelectorAll('[data-step]').forEach(btn=>btn.addEventListener('click',()=>setFreq((+slider.value)+(+btn.dataset.step))));
    if(after)line.textContent='……滴水声……一只瓷杯被轻轻放下……';
-   const replay=document.createElement('button');replay.type='button';replay.className='story-action';replay.classList.add('radio-compare');replay.textContent=state.floodReconstructed?'查看已经还原的声音':'将录音与镜面水痕、旧钟对照';replay.onclick=()=>{const missing=[];if(!state.radioRecorded)missing.push('先调到94.7并长按录音');if(!state.puzzleMirrorDone)missing.push('洗漱间镜面上的水汽');if(!state.notes.includes('clock'))missing.push('客厅停在23:47的钟');if(missing.length){$('inspectText').textContent='这段录音已经保存。要还原声音先后，还需要：'+missing.join('、')+'。你可以在手记中随时取出录音，不必再回来按一次收音机。';return}showFloodReconstruction()};host.appendChild(replay);const hint=document.createElement('p');hint.className='puzzle-guide';hint.textContent='可以先在这次调查中完成录音。其他物证找到后，手记会记住这段声音。';host.appendChild(hint)
+   const replay=document.createElement('button');replay.type='button';replay.className='story-action';replay.classList.add('radio-compare');replay.textContent=state.floodReconstructed?'查看已经还原的声音':'将录音与镜面水痕、旧钟对照';replay.onclick=()=>{const missing=[];if(!state.radioRecorded)missing.push('先调到94.7并长按录音');if(!state.puzzleMirrorDone)missing.push('洗漱间镜面上的水汽');if(!state.notes.includes('clock'))missing.push('客厅停在23:47的钟');if(missing.length){$('inspectText').textContent='这段录音已经保存。要还原声音先后，还需要：'+missing.join('、')+'。你可以在手记中随时取出录音，不必再回来按一次收音机。';return}showFloodReconstruction()};host.appendChild(replay);const hint=document.createElement('p');hint.className='puzzle-guide';hint.textContent='慢慢转动刻度，留意杂音何时变成有节奏的杯响与滴水声。94.7附近的刻度被反复摸亮；调到清晰位置后，按住录音键约1.25秒。其他物证找到后，手记会记住这段声音。';host.appendChild(hint)
   }
  });
 }
@@ -1615,7 +1653,7 @@ function interact(action){
  switch(action){
  case 'alleyLamp':AUDIO.sfx('drip',.5);whisper('雨水落在电灯罩上，声音与路面的积水不同。');break;
  case 'alleyWindow':AUDIO.sfx('creak',-.3);whisper('窗帘动了一下。窗里没有开风扇。');break;
- case 'wallCenter':AUDIO.sfx('knock');whisper((state.counts.wallCenter||0)>1?'这面墙传来的回音，似乎比其他地方晚了一瞬。':'砖缝里都是湿灰。只有中间一块墙，摸起来像旧木头。');flag('touchedWall');break;
+ case 'wallCenter':{AUDIO.sfx('knock');const missing=[];if(!visited('six'))missing.push('六号屋');if(!visited('eight'))missing.push('八号屋');if(missing.length)whisper('墙面中央的回音晚了一瞬。先分别进入'+missing.join('和')+'调查，再回来检查这块像旧木头的墙面。',9000);else if(!state.doorAppeared)whisper('两侧的住户都留下了痕迹。转身离开，再回到这面墙前看看。',8500);else whisper('木纹后面传来一声轻轻的门闩响。第三扇门已经出现，中央的门框不再是墙。',8500);flag('touchedWall');break;}
  case 'wallGround':AUDIO.sfx('drip');whisper(state.doorAppeared?'门槛前的水面上漂着一丝褪色红线。':'积水正沿着墙脚缓慢流走，却没有任何排水口。');break;
  case 'sixShrine':AUDIO.sfx('paper');objectView('six','小神龛','香灰像是刚落下来的。供桌上的两支蜡烛，一支燃到尽头，另一支却几乎没有烧过。\n神龛旁的墙面上有一道被人反复擦洗过的水线。',{eyebrow:'六号屋 · 墙角'});break;
  case 'sixCups':AUDIO.sfx('cup',-.3);objectView('six','两杯茶',visited('eight')?'两只杯子都还温热。但左侧杯沿上多出一个新鲜的水印。\n你进屋的时候，里面没有人。':'两杯茶摆得整整齐齐，一杯浓一些，一杯淡一些。\n杯口仍冒着若有若无的热气。',{eyebrow:'六号屋 · 木桌'});break;
@@ -1924,7 +1962,35 @@ function togglePanel(which){
  $('sidePanel').hidden=false;$('panelClose').focus({preventScroll:true});
 }
 function closePanel(){activePanel=null;$('sidePanel').hidden=true}
-function settings(open){if(open)AUDIO.playClip('cloth_rustle',.08,.45);$('settingsOverlay').hidden=!open;$('motionToggle').checked=state.motion;$('hotspotToggle').checked=state.showHotspots;$('volumeRange').value=state.volume;$('volumeOutput').value=state.volume+'%';$('musicToggle').checked=state.musicEnabled!==false;if(open)AUDIO.radio(false)}
+const CHAPTER_JUMP_BACKUP_KEY=SAVE_KEY+'.beforeChapterJump';
+function jumpToChapter2ForTesting(){
+ if(!confirm('将当前进度备份后，直接进入第二章《门后》？此操作仅用于测试，不计入自然通关记录。'))return;
+ try{
+  const current=localStorage.getItem(SAVE_KEY);
+  if(current){localStorage.setItem(CHAPTER_JUMP_BACKUP_KEY,current);if(localStorage.getItem(CHAPTER_JUMP_BACKUP_KEY)!==current)throw new Error('backup verification failed')}
+ }catch(e){alert('浏览器未允许保存跳关备份。为避免覆盖现有进度，本次跳转已取消。');return}
+ state.finished=true;state.memoryPlayed=true;state.memorySolved=true;state.puzzleDialDone=true;
+ state.c2=DEFAULT().c2;state.c2.entered=true;state.c2.ending='none';
+ save();settings(false);c2Start();
+}
+function restoreBeforeChapterJump(){
+ try{
+  const raw=localStorage.getItem(CHAPTER_JUMP_BACKUP_KEY);
+  if(!raw){whisper('没有找到跳关前的存档。',4500);return}
+  if(!confirm('恢复跳关前的存档？当前第二章测试进度会被替换；跳关前的存档不会删除。'))return;
+  localStorage.setItem(SAVE_KEY,raw);const restored=load();if(!restored)return;
+  state=restored;inGame=true;$('prologue').hidden=true;$('endingOverlay').hidden=true;settings(false);
+  image.dataset.art=sceneArt(state.scene);image.src=ART(sceneArt(state.scene));previous.style.opacity='0';
+  renderHotspots();setButtons();updateTVApparition();AUDIO.setMood(state.scene);updateLook(true);
+  whisper('已恢复跳关前的存档。',5500);
+ }catch(e){whisper('恢复存档失败，请保留当前页面并检查浏览器本地存储权限。',6500)}
+}
+function settings(open){
+ if(open)AUDIO.playClip('cloth_rustle',.08,.45);
+ $('settingsOverlay').hidden=!open;$('motionToggle').checked=state.motion;$('hotspotToggle').checked=state.showHotspots;$('volumeRange').value=state.volume;$('volumeOutput').value=state.volume+'%';$('musicToggle').checked=state.musicEnabled!==false;
+ const restore=$('restoreChapterSaveBtn');if(restore){let hasBackup=false;try{hasBackup=!!localStorage.getItem(CHAPTER_JUMP_BACKUP_KEY)}catch(e){}restore.hidden=!hasBackup}
+ if(open)AUDIO.radio(false)
+}
 function reset(){document.body.classList.remove('scare-active');clearTimeout(pendingFinish);dissolveAnomaly();$('jumpscare').hidden=true;scareBusy=false;closePanel();closeInspect();settings(false);state=DEFAULT(); if(isTouchDevice()) state.showHotspots=true; inGame=false;$('endingOverlay').hidden=true;$('prologue').hidden=false;$('continueBtn').hidden=true;image.dataset.art='alley';image.src=ART('alley');previous.style.opacity=0;$('ambientLine').classList.remove('visible');try{localStorage.removeItem(SAVE_KEY)}catch(e){};setButtons()}
 function startNew(){state=DEFAULT(); if(isTouchDevice()) state.showHotspots=true; state.scareMode=true; inGame=true;$('prologue').hidden=true;AUDIO.start();AUDIO.setMuted(false);enter('alley');showTouchCoach();whisper('雨水从屋檐落下来。你想起小时候有人叫你「小渡」。可你从来没有告诉过谁这个称呼。',8700)}
 function continueGame(){const saveState=load();if(!saveState)return startNew();state=saveState; if(isTouchDevice()&&state.showHotspots===undefined) state.showHotspots=true; if(state.scareMode===undefined) state.scareMode=true; inGame=true;$('prologue').hidden=true;$('endingOverlay').hidden=true;AUDIO.start();AUDIO.setMuted(state.muted);image.dataset.art=sceneArt(state.scene);image.src=ART(sceneArt(state.scene));previous.style.opacity='0';renderHotspots();setButtons();updateTVApparition();AUDIO.setMood(state.scene);updateLook(true);showTouchCoach();if(state.c2?.ending&&state.c2.ending!=='none'){showC2Ending(state.c2.ending)}else if(state.finished&&state.memoryPlayed&&!state.c2?.entered){showFinalChapterEnding(false)}else whisper(state.scene&&state.scene.startsWith('c2_')?'你回到了门后的走廊。湿脚印还在。':'你回到了桂槐巷。雨还没有停。',6000)}
@@ -1933,6 +1999,7 @@ function attachUI(){
  document.addEventListener('touchend',()=>{if(inGame)AUDIO.resume?.()},{passive:true});
  document.addEventListener('pointerdown',()=>{if(inGame)AUDIO.resume?.()},{passive:true});
  $('newGameBtn').onclick=startNew;$('continueBtn').onclick=continueGame;
+ $('chapterJumpBtn').onclick=jumpToChapter2ForTesting;$('restoreChapterSaveBtn').onclick=restoreBeforeChapterJump;
  $('backBtn').onclick=goBack;$('bagBtn').onclick=()=>togglePanel('bag');$('journalBtn').onclick=()=>togglePanel('journal');
  $('torchBtn').onclick=()=>{state.torch=!state.torch;AUDIO.sfx('switch');setButtons();save()};
  $('soundBtn').onclick=()=>{if(!inGame)return;AUDIO.start();state.muted=!state.muted;AUDIO.setMuted(state.muted);setButtons();save()};
